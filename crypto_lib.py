@@ -24,7 +24,7 @@ class CryptoMath:
     # ============== MDC e Algoritmo de Euclides ==============
     
     @staticmethod
-    def gcd(a: int, b: int) -> int:
+    def mdc(a: int, b: int) -> int:
         """
         Calcula o Máximo Divisor Comum (MDC) usando Algoritmo de Euclides.
         
@@ -36,7 +36,7 @@ class CryptoMath:
             MDC de a e b
             
         Exemplo:
-            >>> CryptoMath.gcd(48, 18)
+            >>> CryptoMath.mdc(48, 18)
             6
         """
         a, b = abs(a), abs(b)
@@ -45,38 +45,38 @@ class CryptoMath:
         return a
 
     @staticmethod
-    def extended_gcd(a: int, b: int) -> Tuple[int, int, int]:
+    def mdc_estendido(a: int, b: int) -> Tuple[int, int, int]:
         """
         Algoritmo Estendido de Euclides.
-        Retorna (gcd, x, y) tal que: a*x + b*y = gcd(a, b)
+        Retorna (mdc, x, y) tal que: a*x + b*y = mdc(a, b)
         
         Args:
             a: Primeiro número
             b: Segundo número
             
         Returns:
-            Tupla (gcd, x, y) onde gcd = mdc(a,b) e a*x + b*y = gcd
+            Tupla (mdc, x, y) onde mdc = mdc(a,b) e a*x + b*y = mdc
             
         Exemplo:
-            >>> gcd, x, y = CryptoMath.extended_gcd(10, 6)
-            >>> gcd
+            >>> mdc, x, y = CryptoMath.mdc_estendido(10, 6)
+            >>> mdc
             2
-            >>> 10*x + 6*y == gcd
+            >>> 10*x + 6*y == mdc
             True
         """
         if b == 0:
             return a, 1, 0
         
-        gcd, x1, y1 = CryptoMath.extended_gcd(b, a % b)
+        mdc, x1, y1 = CryptoMath.mdc_estendido(b, a % b)
         x = y1
         y = x1 - (a // b) * y1
         
-        return gcd, x, y
+        return mdc, x, y
 
     # ============== Aritmética Modular ==============
 
     @staticmethod
-    def mod_inverse(a: int, m: int) -> int:
+    def inverso_modular(a: int, m: int) -> int:
         """
         Calcula o inverso multiplicativo de a módulo m.
         Retorna x tal que (a * x) % m = 1
@@ -89,23 +89,23 @@ class CryptoMath:
             Inverso multiplicativo de a módulo m
             
         Raises:
-            ValueError: Se o inverso não existe (gcd(a,m) != 1)
+            ValueError: Se o inverso não existe (mdc(a,m) != 1)
             
         Exemplo:
-            >>> CryptoMath.mod_inverse(3, 11)
+            >>> CryptoMath.inverso_modular(3, 11)
             4
             >>> (3 * 4) % 11
             1
         """
-        gcd, x, _ = CryptoMath.extended_gcd(a, m)
+        mdc, x, _ = CryptoMath.mdc_estendido(a, m)
         
-        if gcd != 1:
+        if mdc != 1:
             raise ValueError(f"Inverso multiplicativo não existe para {a} mod {m}")
         
         return x % m
 
     @staticmethod
-    def mod_exp(base: int, exp: int, mod: int) -> int:
+    def exponenciacao_modular(base: int, exp: int, mod: int) -> int:
         """
         Calcula (base^exp) % mod de forma eficiente usando exponenciação modular.
         Usa algoritmo de exponenciação rápida (binary exponentiation).
@@ -119,7 +119,7 @@ class CryptoMath:
             (base^exp) % mod
             
         Exemplo:
-            >>> CryptoMath.mod_exp(2, 10, 1000)
+            >>> CryptoMath.exponenciacao_modular(2, 10, 1000)
             24
             >>> (2**10) % 1000
             24
@@ -138,7 +138,7 @@ class CryptoMath:
     # ============== Números Primos ==============
 
     @staticmethod
-    def is_prime(n: int, k: int = 40) -> bool:
+    def eh_primo(n: int, k: int = 40) -> bool:
         """
         Testa se um número é primo usando Teste de Miller-Rabin.
         Probabilístico com probabilidade de erro < 4^(-k)
@@ -151,9 +151,9 @@ class CryptoMath:
             True se provavelmente primo, False se composição
             
         Exemplo:
-            >>> CryptoMath.is_prime(17)
+            >>> CryptoMath.eh_primo(17)
             True
-            >>> CryptoMath.is_prime(16)
+            >>> CryptoMath.eh_primo(16)
             False
         """
         if n < 2:
@@ -173,13 +173,13 @@ class CryptoMath:
         # Testa k vezes
         for _ in range(k):
             a = random.randint(2, n - 2)
-            x = CryptoMath.mod_exp(a, d, n)
+            x = CryptoMath.exponenciacao_modular(a, d, n)
             
             if x == 1 or x == n - 1:
                 continue
             
             for _ in range(r - 1):
-                x = CryptoMath.mod_exp(x, 2, n)
+                x = CryptoMath.exponenciacao_modular(x, 2, n)
                 if x == n - 1:
                     break
             else:
@@ -188,7 +188,7 @@ class CryptoMath:
         return True
 
     @staticmethod
-    def find_prime(bits: int) -> int:
+    def gerar_primo(bits: int) -> int:
         """
         Encontra um número primo aleatório com o número especificado de bits.
         
@@ -199,20 +199,20 @@ class CryptoMath:
             Um número primo com aproximadamente 'bits' bits
             
         Exemplo:
-            >>> prime = CryptoMath.find_prime(16)
-            >>> CryptoMath.is_prime(prime)
+            >>> prime = CryptoMath.gerar_primo(16)
+            >>> CryptoMath.eh_primo(prime)
             True
         """
         while True:
             n = random.getrandbits(bits)
             n |= (1 << bits - 1) | 1  # Garante que tem 'bits' bits e é ímpar
-            if CryptoMath.is_prime(n):
+            if CryptoMath.eh_primo(n):
                 return n
 
     # ============== Função de Euler (Totient) ==============
 
     @staticmethod
-    def euler_totient(n: int) -> int:
+    def totiente_euler(n: int) -> int:
         """
         Calcula φ(n) - Função Totiente de Euler.
         Conta quantos inteiros positivos <= n são coprimos com n.
@@ -227,9 +227,9 @@ class CryptoMath:
             φ(n)
             
         Exemplo:
-            >>> CryptoMath.euler_totient(12)
+            >>> CryptoMath.totiente_euler(12)
             4
-            >>> CryptoMath.euler_totient(7)
+            >>> CryptoMath.totiente_euler(7)
             6
         """
         result = n
@@ -248,7 +248,7 @@ class CryptoMath:
         return result
 
     @staticmethod
-    def euler_totient_pq(p: int, q: int) -> int:
+    def totiente_euler_pq(p: int, q: int) -> int:
         """
         Calcula φ(n) quando n = p*q (p e q primos distintos).
         Otimizado: φ(p*q) = (p-1)*(q-1)
@@ -261,7 +261,7 @@ class CryptoMath:
             φ(p*q) = (p-1)*(q-1)
             
         Exemplo:
-            >>> CryptoMath.euler_totient_pq(5, 7)
+            >>> CryptoMath.totiente_euler_pq(5, 7)
             24
         """
         return (p - 1) * (q - 1)
@@ -269,7 +269,7 @@ class CryptoMath:
     # ============== Teorema Chinês do Resto ==============
 
     @staticmethod
-    def chinese_remainder_theorem(remainders: list, moduli: list) -> int:
+    def teorema_chines_resto(remainders: list, moduli: list) -> int:
         """
         Resolve sistema de congruências usando Teorema Chinês do Resto.
         Encontra x tal que:
@@ -290,7 +290,7 @@ class CryptoMath:
             ValueError: Se moduli não são coprimos
             
         Exemplo:
-            >>> x = CryptoMath.chinese_remainder_theorem([2, 3, 2], [3, 5, 7])
+            >>> x = CryptoMath.teorema_chines_resto([2, 3, 2], [3, 5, 7])
             >>> x % 3 == 2 and x % 5 == 3 and x % 7 == 2
             True
         """
@@ -300,7 +300,7 @@ class CryptoMath:
         # Verifica se moduli são coprimos
         for i in range(len(moduli)):
             for j in range(i + 1, len(moduli)):
-                if CryptoMath.gcd(moduli[i], moduli[j]) != 1:
+                if CryptoMath.mdc(moduli[i], moduli[j]) != 1:
                     raise ValueError(f"Módulos {moduli[i]} e {moduli[j]} não são coprimos")
         
         M = 1
@@ -310,7 +310,7 @@ class CryptoMath:
         x = 0
         for i in range(len(remainders)):
             Mi = M // moduli[i]
-            yi = CryptoMath.mod_inverse(Mi, moduli[i])
+            yi = CryptoMath.inverso_modular(Mi, moduli[i])
             x += remainders[i] * Mi * yi
         
         return x % M
@@ -318,7 +318,7 @@ class CryptoMath:
     # ============== Utilitários ==============
 
     @staticmethod
-    def are_coprime(a: int, b: int) -> bool:
+    def sao_coprimos(a: int, b: int) -> bool:
         """
         Verifica se dois números são coprimos (mdc = 1).
         
@@ -329,10 +329,10 @@ class CryptoMath:
         Returns:
             True se são coprimos, False caso contrário
         """
-        return CryptoMath.gcd(a, b) == 1
+        return CryptoMath.mdc(a, b) == 1
 
     @staticmethod
-    def lcm(a: int, b: int) -> int:
+    def mmc(a: int, b: int) -> int:
         """
         Calcula o Mínimo Múltiplo Comum (MMC).
         
@@ -343,7 +343,7 @@ class CryptoMath:
         Returns:
             MMC de a e b
         """
-        return abs(a * b) // CryptoMath.gcd(a, b)
+        return abs(a * b) // CryptoMath.mdc(a, b)
 
 
 if __name__ == "__main__":
@@ -353,42 +353,42 @@ if __name__ == "__main__":
     
     # Exemplos de uso
     print("\n1. MDC e Algoritmo de Euclides")
-    print(f"   MDC(48, 18) = {CryptoMath.gcd(48, 18)}")
+    print(f"   MDC(48, 18) = {CryptoMath.mdc(48, 18)}")
     
     print("\n2. Algoritmo Estendido de Euclides")
-    gcd, x, y = CryptoMath.extended_gcd(10, 6)
-    print(f"   gcd, x, y = extended_gcd(10, 6)")
-    print(f"   Resultado: gcd={gcd}, x={x}, y={y}")
+    mdc, x, y = CryptoMath.mdc_estendido(10, 6)
+    print(f"   mdc, x, y = mdc_estendido(10, 6)")
+    print(f"   Resultado: mdc={mdc}, x={x}, y={y}")
     print(f"   Verificação: 10*{x} + 6*{y} = {10*x + 6*y}")
     
     print("\n3. Inverso Multiplicativo")
-    inv = CryptoMath.mod_inverse(3, 11)
+    inv = CryptoMath.inverso_modular(3, 11)
     print(f"   Inverso de 3 mod 11 = {inv}")
     print(f"   Verificação: (3 * {inv}) % 11 = {(3 * inv) % 11}")
     
     print("\n4. Exponenciação Modular")
-    result = CryptoMath.mod_exp(2, 10, 1000)
+    result = CryptoMath.exponenciacao_modular(2, 10, 1000)
     print(f"   (2^10) % 1000 = {result}")
     
     print("\n5. Testes de Primalidade")
     test_numbers = [17, 19, 97, 100, 121]
     for num in test_numbers:
-        print(f"   {num} é primo? {CryptoMath.is_prime(num)}")
+        print(f"   {num} é primo? {CryptoMath.eh_primo(num)}")
     
     print("\n6. Função φ de Euler (Totient)")
-    print(f"   φ(12) = {CryptoMath.euler_totient(12)}")
-    print(f"   φ(7) = {CryptoMath.euler_totient(7)}")
-    print(f"   φ(5*7) = {CryptoMath.euler_totient_pq(5, 7)}")
+    print(f"   φ(12) = {CryptoMath.totiente_euler(12)}")
+    print(f"   φ(7) = {CryptoMath.totiente_euler(7)}")
+    print(f"   φ(5*7) = {CryptoMath.totiente_euler_pq(5, 7)}")
     
     print("\n7. Coprimalidade")
-    print(f"   MDC(15, 28) = {CryptoMath.gcd(15, 28)}")
-    print(f"   15 e 28 são coprimos? {CryptoMath.are_coprime(15, 28)}")
+    print(f"   MDC(15, 28) = {CryptoMath.mdc(15, 28)}")
+    print(f"   15 e 28 são coprimos? {CryptoMath.sao_coprimos(15, 28)}")
     
     print("\n8. Mínimo Múltiplo Comum (MMC)")
-    print(f"   MMC(12, 18) = {CryptoMath.lcm(12, 18)}")
+    print(f"   MMC(12, 18) = {CryptoMath.mmc(12, 18)}")
     
     print("\n9. Teorema Chinês do Resto")
-    x = CryptoMath.chinese_remainder_theorem([2, 3, 2], [3, 5, 7])
+    x = CryptoMath.teorema_chines_resto([2, 3, 2], [3, 5, 7])
     print(f"   Solução para x≡2(mod 3), x≡3(mod 5), x≡2(mod 7)")
     print(f"   x = {x}")
     print(f"   Verificação: {x}%3={x%3}, {x}%5={x%5}, {x}%7={x%7}")

@@ -24,15 +24,15 @@ A aritmética modular trabalha com restos de divisão. Se a ≡ b (mod m), signi
 ```
 
 **Quando existe**:
-- Existe se e somente se gcd(a, m) = 1 (a e m são coprimos)
-- Se gcd(a, m) ≠ 1, não existe inverso
+- Existe se e somente se mdc(a, m) = 1 (a e m são coprimos)
+- Se mdc(a, m) ≠ 1, não existe inverso
 
 **Algoritmo**:
 Usa o Algoritmo Estendido de Euclides para encontrar x, y tal que:
 ```
-a*x + m*y = gcd(a, m)
+a*x + m*y = mdc(a, m)
 ```
-Se gcd(a, m) = 1, então `x` é o inverso de `a` mod `m`.
+Se mdc(a, m) = 1, então `x` é o inverso de `a` mod `m`.
 
 **Exemplo**:
 ```
@@ -63,7 +63,7 @@ Portanto, inv = 4
 
 **Pseudocódigo**:
 ```
-mod_exp(base, exp, mod):
+exponenciacao_modular(base, exp, mod):
     result = 1
     base = base % mod
     while exp > 0:
@@ -98,7 +98,7 @@ mod_exp(base, exp, mod):
 
 **Algoritmo de Euclides**:
 ```
-gcd(a, b):
+mdc(a, b):
     while b ≠ 0:
         temp = b
         b = a mod b
@@ -108,16 +108,16 @@ gcd(a, b):
 
 **Propriedade Principal**:
 ```
-gcd(a, b) = gcd(b, a mod b)
+mdc(a, b) = mdc(b, a mod b)
 ```
 
 **Exemplo**:
 ```
-gcd(48, 18):
+mdc(48, 18):
 48 = 18 * 2 + 12
 18 = 12 * 1 + 6
 12 = 6 * 2 + 0
-Portanto, gcd = 6
+Portanto, mdc = 6
 ```
 
 **Complexidade**: O(log(min(a, b)))
@@ -128,25 +128,25 @@ Portanto, gcd = 6
 
 **Objetivo**: Encontrar x, y inteiros tal que:
 ```
-a*x + b*y = gcd(a, b)
+a*x + b*y = mdc(a, b)
 ```
 
 **Pseudocódigo Recursivo**:
 ```
-extended_gcd(a, b):
+mdc_estendido(a, b):
     if b = 0:
         return (a, 1, 0)
     else:
-        (gcd, x1, y1) = extended_gcd(b, a mod b)
+        (mdc, x1, y1) = mdc_estendido(b, a mod b)
         x = y1
         y = x1 - (a // b) * y1
-        return (gcd, x, y)
+        return (mdc, x, y)
 ```
 
 **Exemplo**:
 ```
-extended_gcd(10, 6):
-Retorna: gcd=2, x=2, y=-3
+mdc_estendido(10, 6):
+Retorna: mdc=2, x=2, y=-3
 Verificação: 10*2 + 6*(-3) = 20 - 18 = 2 ✓
 ```
 
@@ -238,7 +238,7 @@ Um número primo p é aquele divisível apenas por 1 e por ele mesmo.
 
 **Para produtos de coprimos**:
 ```
-Se gcd(m, n) = 1, então φ(m*n) = φ(m) * φ(n)
+Se mdc(m, n) = 1, então φ(m*n) = φ(m) * φ(n)
 ```
 
 **Para n = p * q (p, q primos distintos)**:
@@ -263,7 +263,7 @@ Se gcd(m, n) = 1, então φ(m*n) = φ(m) * φ(n)
 ### Aplicações em Criptografia
 
 - **RSA**: φ(n) = (p-1)*(q-1) é usado para calcular chave privada
-- **Teorema de Euler**: a^φ(n) ≡ 1 (mod n) se gcd(a,n)=1
+- **Teorema de Euler**: a^φ(n) ≡ 1 (mod n) se mdc(a,n)=1
 - **Pequeno Teorema de Fermat**: p^(p-1) ≡ 1 (mod p) para primo p
 
 ---
@@ -281,7 +281,7 @@ x ≡ aₖ (mod mₖ)
 
 ### Condição de Existência
 - Solução existe se e somente se os módulos m₁, m₂, ..., mₖ são **coprimos entre si**
-- Ou seja: gcd(mᵢ, mⱼ) = 1 para todo i ≠ j
+- Ou seja: mdc(mᵢ, mⱼ) = 1 para todo i ≠ j
 
 ### Algoritmo (Construção)
 

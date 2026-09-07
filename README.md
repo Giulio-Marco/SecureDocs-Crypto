@@ -12,7 +12,7 @@ Esta é uma biblioteca Python que implementa os algoritmos matemáticos fundamen
 
 ### 2. **MDC e Algoritmo de Euclides**
 - **Máximo Divisor Comum (GCD)**: Implementação do algoritmo de Euclides
-- **Algoritmo Estendido de Euclides**: Encontra x, y tal que a*x + b*y = gcd(a,b)
+- **Algoritmo Estendido de Euclides**: Encontra x, y tal que a*x + b*y = mdc(a,b)
 
 ### 3. **Números Primos**
 - **Teste de Primalidade**: Implementação do Teste de Miller-Rabin (probabilístico)
@@ -54,36 +54,36 @@ Isto executará a suite completa de testes unitários validando toda a implement
 from crypto_lib import CryptoMath
 
 # MDC
-mdc = CryptoMath.gcd(48, 18)  # Resultado: 6
+mdc = CryptoMath.mdc(48, 18)  # Resultado: 6
 
 # Algoritmo Estendido de Euclides
-gcd, x, y = CryptoMath.extended_gcd(10, 6)
-# Resultado: gcd=2, x=2, y=-3
+mdc, x, y = CryptoMath.mdc_estendido(10, 6)
+# Resultado: mdc=2, x=2, y=-3
 # Verificação: 10*2 + 6*(-3) = 2
 
 # Inverso Multiplicativo
-inv = CryptoMath.mod_inverse(3, 11)  # Resultado: 4
+inv = CryptoMath.inverso_modular(3, 11)  # Resultado: 4
 # Verificação: (3 * 4) % 11 = 1
 
 # Exponenciação Modular
-result = CryptoMath.mod_exp(2, 10, 1000)  # Resultado: 24
+result = CryptoMath.exponenciacao_modular(2, 10, 1000)  # Resultado: 24
 
 # Teste de Primalidade
-is_prime = CryptoMath.is_prime(17)  # Resultado: True
+eh_primo = CryptoMath.eh_primo(17)  # Resultado: True
 
 # Função φ de Euler
-phi = CryptoMath.euler_totient(12)  # Resultado: 4
-phi_pq = CryptoMath.euler_totient_pq(5, 7)  # Resultado: 24
+phi = CryptoMath.totiente_euler(12)  # Resultado: 4
+phi_pq = CryptoMath.totiente_euler_pq(5, 7)  # Resultado: 24
 
 # Teorema Chinês do Resto
-x = CryptoMath.chinese_remainder_theorem([2, 3, 2], [3, 5, 7])
+x = CryptoMath.teorema_chines_resto([2, 3, 2], [3, 5, 7])
 # Encontra x tal que: x≡2(mod 3), x≡3(mod 5), x≡2(mod 7)
 
 # Verificar coprimalidade
-coprime = CryptoMath.are_coprime(15, 28)  # Resultado: True
+coprime = CryptoMath.sao_coprimos(15, 28)  # Resultado: True
 
 # MMC
-lcm = CryptoMath.lcm(12, 18)  # Resultado: 36
+mmc = CryptoMath.mmc(12, 18)  # Resultado: 36
 ```
 
 ## 🏗️ Estrutura do Projeto
@@ -139,7 +139,7 @@ Este projeto é a base para as próximas missões do SecureDocs:
 ## 📝 Notas Importantes
 
 1. **Miller-Rabin é probabilístico**: Para números críticos, execute múltiplas vezes
-2. **Módulos devem ser coprimos**: No Teorema Chinês do Resto, verifique gcd
+2. **Módulos devem ser coprimos**: No Teorema Chinês do Resto, verifique mdc
 3. **Overflow não é problema**: Python suporta inteiros arbitrários
 4. **Segurança**: Esta é uma implementação educacional, não use em produção
 

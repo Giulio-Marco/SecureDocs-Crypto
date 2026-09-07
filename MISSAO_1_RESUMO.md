@@ -147,28 +147,28 @@ Trabalho-Criptografia/
 from crypto_lib import CryptoMath
 
 # Mostrar MDC
-print(f"MDC(48, 18) = {CryptoMath.gcd(48, 18)}")
+print(f"MDC(48, 18) = {CryptoMath.mdc(48, 18)}")
 
 # Mostrar inverso
-inv = CryptoMath.mod_inverse(3, 11)
+inv = CryptoMath.inverso_modular(3, 11)
 print(f"Inverso de 3 mod 11 = {inv}")
 
 # Mostrar primalidade
-print(f"17 é primo? {CryptoMath.is_prime(17)}")
+print(f"17 é primo? {CryptoMath.eh_primo(17)}")
 ```
 
 ### Demonstração Avançada
 ```python
 # Gerar primos para RSA
-p = CryptoMath.find_prime(1024)
-q = CryptoMath.find_prime(1024)
+p = CryptoMath.gerar_primo(1024)
+q = CryptoMath.gerar_primo(1024)
 
 # Calcular φ(n) para RSA
 n = p * q
-phi = CryptoMath.euler_totient_pq(p, q)
+phi = CryptoMath.totiente_euler_pq(p, q)
 
 # Exponenciação rápida
-encrypted = CryptoMath.mod_exp(message, e, n)
+encrypted = CryptoMath.exponenciacao_modular(message, e, n)
 ```
 
 ---

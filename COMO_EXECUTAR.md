@@ -19,8 +19,8 @@ BIBLIOTECA DE CRIPTOGRAFIA - MISSÃO 1
    MDC(48, 18) = 6
 
 2. Algoritmo Estendido de Euclides
-   gcd, x, y = extended_gcd(10, 6)
-   Resultado: gcd=2, x=2, y=-3
+   mdc, x, y = mdc_estendido(10, 6)
+   Resultado: mdc=2, x=2, y=-3
    Verificação: 10*2 + 6*(-3) = 2
 
 ... (mais exemplos)
@@ -59,15 +59,15 @@ Se quiser usar a biblioteca em outro arquivo Python:
 from crypto_lib import CryptoMath
 
 # Exemplos de uso
-mdc = CryptoMath.gcd(48, 18)
+mdc = CryptoMath.mdc(48, 18)
 print(f"MDC(48, 18) = {mdc}")
 
 # Teste de primalidade
-if CryptoMath.is_prime(17):
+if CryptoMath.eh_primo(17):
     print("17 é primo!")
 
 # Exponenciação modular eficiente
-result = CryptoMath.mod_exp(2, 1000000, 10**9 + 7)
+result = CryptoMath.exponenciacao_modular(2, 1000000, 10**9 + 7)
 print(f"(2^1000000) mod 10^9+7 = {result}")
 ```
 
