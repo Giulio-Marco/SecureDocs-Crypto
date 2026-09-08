@@ -20,12 +20,13 @@ Resultado: MDC(48, 18) = 6
 ```
 
 Escolha `0` para sair. As opções disponíveis são:
-- `1`: MDC
-- `2`: Inverso multiplicativo
-- `3`: Exponenciação modular
-- `4`: Verificar se é primo
-- `5`: Função de Euler
-- `6`: MMC
+- `1`: Algoritmo de Euclides (classico)
+- `2`: Algoritmo Estendido de Euclides
+- `3`: Aritmetica modular (soma, subtracao, multiplicacao, exponenciacao e inverso)
+- `4`: Teorema Chines do Resto
+- `5`: Verificar se e primo
+- `6`: Funcao de Euler
+- `7`: MMC
 
 Para usar a biblioteca sem o menu, importe `CryptoMath` em outro arquivo.
 

@@ -351,64 +351,83 @@ def executar_menu_interativo() -> None:
     """Permite escolher uma operação e informar os valores pelo terminal."""
     while True:
         print("\n=== Calculadora de Criptografia ===")
-        print("1 - euclides(classico e estendido")
-        print("2 - Inverso multiplicativo")
-        print("3 - Exponenciação modular")
-        print("4 - Verificar se é primo")
-        print("5 - Função de Euler φ(n)")
-        print("6 - MMC")
-        print("7 - Teorema Chinês do Resto")
+        print("1 - Algoritmo de Euclides (classico)")
+        print("2 - Algoritmo Estendido de Euclides")
+        print("3 - Aritmetica modular")
+        print("4 - Teorema Chines do Resto")
+        print("5 - Verificar se e primo")
+        print("6 - Funcao de Euler phi(n)")
+        print("7 - MMC")
         print("0 - Sair")
 
         opcao = input("Escolha uma opção: ").strip()
 
         try:
-            if opcao == "1": 
-                print("Escolha a operação:")
-                print("1 - Euclides (classico)")
-                print("2 - Euclides (estendido)")
-                sub_opcao = input("Digite a sub-opção: ").strip()
-
-                if sub_opcao == "1":
-                    primeiro = int(input("Digite o primeiro número: "))
-                    segundo = int(input("Digite o segundo número: "))
-                    print(f"Resultado: MDC({primeiro}, {segundo}) = "
-                          f"{CryptoMath.gcd(primeiro, segundo)}")
-                elif sub_opcao == "2":
-                    primeiro = int(input("Digite o primeiro número: "))
-                    segundo = int(input("Digite o segundo número: "))
-                    gcd, x, y = CryptoMath.extended_gcd(primeiro, segundo)
-                    print(f"Resultado: MDC({primeiro}, {segundo}) = {gcd}")
-                    print(f"Coeficientes: x = {x}, y = {y} (verificação: "
-                          f"{primeiro}*{x} + {segundo}*{y} = {gcd})")
+            if opcao == "1":
+                primeiro = int(input("Digite o primeiro numero: "))
+                segundo = int(input("Digite o segundo numero: "))
+                print(f"Resultado: MDC({primeiro}, {segundo}) = "
+                      f"{CryptoMath.gcd(primeiro, segundo)}")
             elif opcao == "2":
-                numero = int(input("Digite o número: "))
-                modulo = int(input("Digite o módulo: "))
-                resultado = CryptoMath.mod_inverse(numero, modulo)
-                print(f"Resultado: o inverso de {numero} mod {modulo} é {resultado}")
+                primeiro = int(input("Digite o primeiro numero: "))
+                segundo = int(input("Digite o segundo numero: "))
+                gcd, x, y = CryptoMath.extended_gcd(primeiro, segundo)
+                print(f"Resultado: MDC({primeiro}, {segundo}) = {gcd}")
+                print(f"Coeficientes: x = {x}, y = {y} "
+                      f"(verificacao: {primeiro}*{x} + {segundo}*{y} = {gcd})")
             elif opcao == "3":
-                base = int(input("Digite a base: "))
-                expoente = int(input("Digite o expoente: "))
-                modulo = int(input("Digite o módulo: "))
-                resultado = CryptoMath.mod_exp(base, expoente, modulo)
-                print(f"Resultado: ({base}^{expoente}) mod {modulo} = {resultado}")
+                print("1 - Soma")
+                print("2 - Subtracao")
+                print("3 - Multiplicacao")
+                print("4 - Exponenciacao")
+                print("5 - Inverso multiplicativo")
+                sub_opcao = input("Escolha uma operacao: ").strip()
+                modulo = int(input("Digite o modulo: "))
+
+                if modulo <= 0:
+                    raise ValueError("O modulo deve ser maior que zero")
+
+                if sub_opcao in {"1", "2", "3"}:
+                    primeiro = int(input("Digite o primeiro numero: "))
+                    segundo = int(input("Digite o segundo numero: "))
+                    operacoes = {
+                        "1": ("+", (primeiro + segundo) % modulo),
+                        "2": ("-", (primeiro - segundo) % modulo),
+                        "3": ("*", (primeiro * segundo) % modulo),
+                    }
+                    simbolo, resultado = operacoes[sub_opcao]
+                    print(f"Resultado: ({primeiro} {simbolo} {segundo}) mod {modulo} = {resultado}")
+                elif sub_opcao == "4":
+                    base = int(input("Digite a base: "))
+                    expoente = int(input("Digite o expoente: "))
+                    resultado = CryptoMath.mod_exp(base, expoente, modulo)
+                    print(f"Resultado: ({base}^{expoente}) mod {modulo} = {resultado}")
+                elif sub_opcao == "5":
+                    numero = int(input("Digite o numero: "))
+                    resultado = CryptoMath.mod_inverse(numero, modulo)
+                    print(f"Resultado: o inverso de {numero} mod {modulo} e {resultado}")
+                else:
+                    print("Opcao invalida. Escolha uma operacao do menu.")
             elif opcao == "4":
+                remainders = list(map(int, input("Digite os restos (separados por espaco): ").split()))
+                moduli = list(map(int, input("Digite os modulos (separados por espaco): ").split()))
+                resultado = CryptoMath.chinese_remainder_theorem(remainders, moduli)
+                modulo_total = 1
+                for modulo in moduli:
+                    modulo_total *= modulo
+                print(f"Resultado: x = {resultado} (mod {modulo_total})")
+            elif opcao == "5":
                 numero = int(input("Digite o número: "))
                 resultado = "é primo" if CryptoMath.is_prime(numero) else "não é primo"
                 print(f"Resultado: {numero} {resultado}.")
-            elif opcao == "5":
+            elif opcao == "6":
                 numero = int(input("Digite n: "))
                 print(f"Resultado: φ({numero}) = {CryptoMath.euler_totient(numero)}")
-            elif opcao == "6":
+            elif opcao == "7":
                 primeiro = int(input("Digite o primeiro número: "))
                 segundo = int(input("Digite o segundo número: "))
                 print(f"Resultado: MMC({primeiro}, {segundo}) = "
                       f"{CryptoMath.lcm(primeiro, segundo)}")
-            elif opcao == "7":
-                remainders = list(map(int, input("Digite os restos (separados por espaço): ").split()))
-                moduli = list(map(int, input("Digite os módulos (separados por espaço): ").split()))
-                resultado = CryptoMath.chinese_remainder_theorem(remainders, moduli)
-                print(f"Resultado: x ≡ {resultado} (mod {CryptoMath.lcm(*moduli)})")
             elif opcao == "0":
                 print("Até mais!")
                 break
