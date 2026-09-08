@@ -1,6 +1,6 @@
 # Como Executar a Biblioteca e Testes
 
-## 🚀 Executar a Biblioteca com Exemplos
+## 🚀 Executar a Calculadora Interativa
 
 Execute no PowerShell:
 
@@ -9,7 +9,31 @@ cd "c:\Users\giuli\OneDrive\Documents\Trabalho-Criptografia"
 python crypto_lib.py
 ```
 
-**Saída esperada**:
+O programa exibirá um menu. Digite o número da operação e, depois, os valores
+solicitados. Por exemplo, para calcular o MDC de 48 e 18:
+
+```text
+Escolha uma opção: 1
+Digite o primeiro número: 48
+Digite o segundo número: 18
+Resultado: MDC(48, 18) = 6
+```
+
+Escolha `0` para sair. As opções disponíveis são:
+- `1`: MDC
+- `2`: Inverso multiplicativo
+- `3`: Exponenciação modular
+- `4`: Verificar se é primo
+- `5`: Função de Euler
+- `6`: MMC
+
+Para usar a biblioteca sem o menu, importe `CryptoMath` em outro arquivo.
+
+### Exemplos exibidos anteriormente
+
+As operações também podem ser chamadas diretamente no código. A saída abaixo
+representa o formato dos resultados:
+
 ```
 ============================================================
 BIBLIOTECA DE CRIPTOGRAFIA - MISSÃO 1

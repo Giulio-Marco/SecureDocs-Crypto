@@ -10,7 +10,8 @@ Implementação de operações matemáticas fundamentais para criptografia:
 - Inverso Multiplicativo
 - Números Primos
 - Função φ de Euler (Totient)
-- Exponenciação Modular
+- Exponenciação Modular1
+
 - Teorema Chinês do Resto
 """
 
@@ -346,51 +347,76 @@ class CryptoMath:
         return abs(a * b) // CryptoMath.gcd(a, b)
 
 
+def executar_menu_interativo() -> None:
+    """Permite escolher uma operação e informar os valores pelo terminal."""
+    while True:
+        print("\n=== Calculadora de Criptografia ===")
+        print("1 - euclides(classico e estendido")
+        print("2 - Inverso multiplicativo")
+        print("3 - Exponenciação modular")
+        print("4 - Verificar se é primo")
+        print("5 - Função de Euler φ(n)")
+        print("6 - MMC")
+        print("7 - Teorema Chinês do Resto")
+        print("0 - Sair")
+
+        opcao = input("Escolha uma opção: ").strip()
+
+        try:
+            if opcao == "1": 
+                print("Escolha a operação:")
+                print("1 - Euclides (classico)")
+                print("2 - Euclides (estendido)")
+                sub_opcao = input("Digite a sub-opção: ").strip()
+
+                if sub_opcao == "1":
+                    primeiro = int(input("Digite o primeiro número: "))
+                    segundo = int(input("Digite o segundo número: "))
+                    print(f"Resultado: MDC({primeiro}, {segundo}) = "
+                          f"{CryptoMath.gcd(primeiro, segundo)}")
+                elif sub_opcao == "2":
+                    primeiro = int(input("Digite o primeiro número: "))
+                    segundo = int(input("Digite o segundo número: "))
+                    gcd, x, y = CryptoMath.extended_gcd(primeiro, segundo)
+                    print(f"Resultado: MDC({primeiro}, {segundo}) = {gcd}")
+                    print(f"Coeficientes: x = {x}, y = {y} (verificação: "
+                          f"{primeiro}*{x} + {segundo}*{y} = {gcd})")
+            elif opcao == "2":
+                numero = int(input("Digite o número: "))
+                modulo = int(input("Digite o módulo: "))
+                resultado = CryptoMath.mod_inverse(numero, modulo)
+                print(f"Resultado: o inverso de {numero} mod {modulo} é {resultado}")
+            elif opcao == "3":
+                base = int(input("Digite a base: "))
+                expoente = int(input("Digite o expoente: "))
+                modulo = int(input("Digite o módulo: "))
+                resultado = CryptoMath.mod_exp(base, expoente, modulo)
+                print(f"Resultado: ({base}^{expoente}) mod {modulo} = {resultado}")
+            elif opcao == "4":
+                numero = int(input("Digite o número: "))
+                resultado = "é primo" if CryptoMath.is_prime(numero) else "não é primo"
+                print(f"Resultado: {numero} {resultado}.")
+            elif opcao == "5":
+                numero = int(input("Digite n: "))
+                print(f"Resultado: φ({numero}) = {CryptoMath.euler_totient(numero)}")
+            elif opcao == "6":
+                primeiro = int(input("Digite o primeiro número: "))
+                segundo = int(input("Digite o segundo número: "))
+                print(f"Resultado: MMC({primeiro}, {segundo}) = "
+                      f"{CryptoMath.lcm(primeiro, segundo)}")
+            elif opcao == "7":
+                remainders = list(map(int, input("Digite os restos (separados por espaço): ").split()))
+                moduli = list(map(int, input("Digite os módulos (separados por espaço): ").split()))
+                resultado = CryptoMath.chinese_remainder_theorem(remainders, moduli)
+                print(f"Resultado: x ≡ {resultado} (mod {CryptoMath.lcm(*moduli)})")
+            elif opcao == "0":
+                print("Até mais!")
+                break
+            else:
+                print("Opção inválida. Escolha um número do menu.")
+        except ValueError as erro:
+            print(f"Valor inválido: {erro}")
+
+
 if __name__ == "__main__":
-    print("=" * 60)
-    print("BIBLIOTECA DE CRIPTOGRAFIA - MISSÃO 1")
-    print("=" * 60)
-    
-    # Exemplos de uso
-    print("\n1. MDC e Algoritmo de Euclides")
-    print(f"   MDC(48, 18) = {CryptoMath.gcd(48, 18)}")
-    
-    print("\n2. Algoritmo Estendido de Euclides")
-    gcd, x, y = CryptoMath.extended_gcd(10, 6)
-    print(f"   gcd, x, y = extended_gcd(10, 6)")
-    print(f"   Resultado: gcd={gcd}, x={x}, y={y}")
-    print(f"   Verificação: 10*{x} + 6*{y} = {10*x + 6*y}")
-    
-    print("\n3. Inverso Multiplicativo")
-    inv = CryptoMath.mod_inverse(3, 11)
-    print(f"   Inverso de 3 mod 11 = {inv}")
-    print(f"   Verificação: (3 * {inv}) % 11 = {(3 * inv) % 11}")
-    
-    print("\n4. Exponenciação Modular")
-    result = CryptoMath.mod_exp(2, 10, 1000)
-    print(f"   (2^10) % 1000 = {result}")
-    
-    print("\n5. Testes de Primalidade")
-    test_numbers = [17, 19, 97, 100, 121]
-    for num in test_numbers:
-        print(f"   {num} é primo? {CryptoMath.is_prime(num)}")
-    
-    print("\n6. Função φ de Euler (Totient)")
-    print(f"   φ(12) = {CryptoMath.euler_totient(12)}")
-    print(f"   φ(7) = {CryptoMath.euler_totient(7)}")
-    print(f"   φ(5*7) = {CryptoMath.euler_totient_pq(5, 7)}")
-    
-    print("\n7. Coprimalidade")
-    print(f"   MDC(15, 28) = {CryptoMath.gcd(15, 28)}")
-    print(f"   15 e 28 são coprimos? {CryptoMath.are_coprime(15, 28)}")
-    
-    print("\n8. Mínimo Múltiplo Comum (MMC)")
-    print(f"   MMC(12, 18) = {CryptoMath.lcm(12, 18)}")
-    
-    print("\n9. Teorema Chinês do Resto")
-    x = CryptoMath.chinese_remainder_theorem([2, 3, 2], [3, 5, 7])
-    print(f"   Solução para x≡2(mod 3), x≡3(mod 5), x≡2(mod 7)")
-    print(f"   x = {x}")
-    print(f"   Verificação: {x}%3={x%3}, {x}%5={x%5}, {x}%7={x%7}")
-    
-    print("\n" + "=" * 60)
+    executar_menu_interativo()
