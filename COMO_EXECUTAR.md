@@ -16,7 +16,7 @@ solicitados. Por exemplo, para calcular o MDC de 48 e 18:
 Escolha uma opção: 1
 Digite o primeiro número: 48
 Digite o segundo número: 18
-Resultado: MDC(48, 18) = 6
+resultadoado: MDC(48, 18) = 6
 ```
 
 Escolha `0` para sair. As opções disponíveis são:
@@ -33,7 +33,7 @@ Para usar a biblioteca sem o menu, importe `CryptoMath` em outro arquivo.
 ### Exemplos exibidos anteriormente
 
 As operações também podem ser chamadas diretamente no código. A saída abaixo
-representa o formato dos resultados:
+representa o formato dos resultadoados:
 
 ```
 ============================================================
@@ -44,8 +44,8 @@ BIBLIOTECA DE CRIPTOGRAFIA - MISSÃO 1
    MDC(48, 18) = 6
 
 2. Algoritmo Estendido de Euclides
-   gcd, x, y = extended_gcd(10, 6)
-   Resultado: gcd=2, x=2, y=-3
+   mdc_euclides, x, y = extended_mdc_euclides(10, 6)
+   resultadoado: mdc_euclides=2, x=2, y=-3
    Verificação: 10*2 + 6*(-3) = 2
 
 ... (mais exemplos)
@@ -84,16 +84,16 @@ Se quiser usar a biblioteca em outro arquivo Python:
 from crypto_lib import CryptoMath
 
 # Exemplos de uso
-mdc = CryptoMath.gcd(48, 18)
+mdc = CryptoMath.mdc_euclides(48, 18)
 print(f"MDC(48, 18) = {mdc}")
 
 # Teste de primalidade
-if CryptoMath.is_prime(17):
+if CryptoMath.ehPrimo(17):
     print("17 é primo!")
 
 # Exponenciação modular eficiente
-result = CryptoMath.mod_exp(2, 1000000, 10**9 + 7)
-print(f"(2^1000000) mod 10^9+7 = {result}")
+resultado = CryptoMath.exp_mod(2, 1000000, 10**9 + 7)
+print(f"(2^1000000) mod 10^9+7 = {resultado}")
 ```
 
 ---
@@ -130,12 +130,12 @@ Esperado: `Python 3.8.x` ou superior
 
 ```
 test_crypto_lib.py
-├── TestMDCAndEuclides (5 testes)
-├── TestModularArithmetic (6 testes)
-├── TestPrimes (5 testes)
-├── TestEulerTotient (5 testes)
-├── TestChineseRemainderTheorem (4 testes)
-└── TestUtilities (3 testes)
+├── Teste_Euclides (5 testes)
+├── Teste_AritmeticaModular (6 testes)
+├── Teste_Primo (5 testes)
+├── Teste_EulerTotiente (5 testes)
+├── Teste_ChinesResto (4 testes)
+└── Teste_Utils (3 testes)
 ```
 
 Cada classe testa um grupo de funções relacionadas.
@@ -146,10 +146,10 @@ Cada classe testa um grupo de funções relacionadas.
 
 ```powershell
 # Testar apenas MDC
-python -m unittest test_crypto_lib.TestMDCAndEuclides -v
+python -m unittest test_crypto_lib.Teste_Euclides -v
 
 # Testar apenas números primos
-python -m unittest test_crypto_lib.TestPrimes -v
+python -m unittest test_crypto_lib.Teste_Primo -v
 ```
 
 ---

@@ -129,7 +129,7 @@ Trabalho-Criptografia/
 
 ### ⚡ Performance
 - Exponenciação modular: O(log exp)
-- GCD: O(log min(a,b))
+- MDC: O(log min(a,b))
 - TCR otimizado para múltiplas congruências
 
 ### 🏆 Qualidade
@@ -147,28 +147,28 @@ Trabalho-Criptografia/
 from crypto_lib import CryptoMath
 
 # Mostrar MDC
-print(f"MDC(48, 18) = {CryptoMath.gcd(48, 18)}")
+print(f"MDC(48, 18) = {CryptoMath.mdc_euclides(48, 18)}")
 
 # Mostrar inverso
-inv = CryptoMath.mod_inverse(3, 11)
+inv = CryptoMath.inverso_multi(3, 11)
 print(f"Inverso de 3 mod 11 = {inv}")
 
 # Mostrar primalidade
-print(f"17 é primo? {CryptoMath.is_prime(17)}")
+print(f"17 é primo? {CryptoMath.ehPrimo(17)}")
 ```
 
 ### Demonstração Avançada
 ```python
 # Gerar primos para RSA
-p = CryptoMath.find_prime(1024)
-q = CryptoMath.find_prime(1024)
+p = CryptoMath.acharPrimo(1024)
+q = CryptoMath.acharPrimo(1024)
 
 # Calcular φ(n) para RSA
 n = p * q
-phi = CryptoMath.euler_totient_pq(p, q)
+phi = CryptoMath.euler_totiente_pq(p, q)
 
 # Exponenciação rápida
-encrypted = CryptoMath.mod_exp(message, e, n)
+encrypted = CryptoMath.exp_mod(message, e, n)
 ```
 
 ---
